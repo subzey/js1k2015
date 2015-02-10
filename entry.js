@@ -1,5 +1,6 @@
-var VIEWPORT_WIDTH = 400;
+var VIEWPORT_WIDTH = 500;
 var VIEWPORT_HEIGHT = 300;
+var DEBUG = true;
 
 if (typeof __RegPack === 'undefined'){
 	g = null;
@@ -12,7 +13,14 @@ setInterval(function(){
 	a.width|=0; // Reset canvas
 	c.translate(a.width/2, a.height/2); // Center the context origin
 	v01 = Math.min(a.width / VIEWPORT_WIDTH, a.height / VIEWPORT_HEIGHT);
-	c.scale(v01, v01); // Make logical viewport fit into physical one
+	c.scale(v01, v01); // Make logical viewport cover physical one
+
+if (DEBUG){
+	c.save();
+	c.strokeStyle = '#fff';
+	c.strokeRect(-VIEWPORT_WIDTH / 2, -VIEWPORT_HEIGHT / 2, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+	c.restore();
+}
 
 
 // Gradient
