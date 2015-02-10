@@ -16,6 +16,7 @@ setInterval(function(){
 	c.scale(v01, v01); // Make logical viewport cover physical one
 
 if (DEBUG){
+	c.scale(0.9, 0.9);
 	c.save();
 	c.strokeStyle = '#fff';
 	c.strokeRect(-VIEWPORT_WIDTH / 2, -VIEWPORT_HEIGHT / 2, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
@@ -25,17 +26,32 @@ if (DEBUG){
 
 // Gradient
 	c.lineWidth = 2;
-	for (var i=99;i--;){
+	for (v01 = 99; v01-- ; ){
 		c.beginPath();
 		c.moveTo(200, 30);
-		c.lineTo(-400, i*1.5-90);
-			if (i<50){
-				c.strokeStyle = 'hsl(0, 15%, ' + (90-i*1.2) + '%)';
+		c.lineTo(-255, v01-90);
+			if (v01<50){
+				c.strokeStyle = 'hsl(0, 15%, ' + (90-v01*1.2) + '%)';
 			} else {
-				c.strokeStyle = 'hsl(195, 25%, ' + (180-i*1.5) + '%)';
+				c.strokeStyle = 'hsl(195, 25%, ' + (180-v01*1.5) + '%)';
 			}
 
 		c.stroke();
 	}
+
+	c.lineWidth = .5;
+	c.strokeStyle = 'red';
+
+	c.beginPath();
+	c.moveTo(-255, 20);
+	c.lineTo(40,28);
+	c.lineTo(50,24);
+	c.bezierCurveTo(
+		100, 24,
+		90, 0,
+		16, -20
+	);
+	c.lineTo(-255, -90);
+	c.stroke();
 
 }, 40);
