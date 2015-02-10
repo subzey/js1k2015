@@ -1,0 +1,1 @@
+@start /MIN /SEPARATE node make --watch
