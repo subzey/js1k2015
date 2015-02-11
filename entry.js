@@ -23,12 +23,15 @@ if (DEBUG){
 	c.restore();
 }
 
+	// c.scale(2,2);
+	// c.translate(-100, 0);
+
 
 // Gradient
 	c.lineWidth = 2;
 	for (v01 = 99; v01-- ; ){
 		c.beginPath();
-		c.moveTo(200, 30);
+		c.moveTo(75 + Math.sin(v01/38) * 30, v01/4);
 		c.lineTo(-255, v01-90);
 			if (v01<50){
 				c.strokeStyle = 'hsl(0, 15%, ' + (90-v01*1.2) + '%)';
@@ -39,19 +42,13 @@ if (DEBUG){
 		c.stroke();
 	}
 
-	c.lineWidth = .5;
-	c.strokeStyle = 'red';
+	c.beginPath();
+	c.arc(17, 5, 21, 1, -1.4, 1);
+	c.arc(22, 5.5, 20.5, -1.4, 1);
+	c.fill();
 
 	c.beginPath();
-	c.moveTo(-255, 20);
-	c.lineTo(40,28);
-	c.lineTo(50,24);
-	c.bezierCurveTo(
-		100, 24,
-		90, 0,
-		16, -20
-	);
-	c.lineTo(-255, -90);
-	c.stroke();
-
+	c.arc(-132, -17, 39, 1, -1.4, 1);
+	c.arc(-122, -16, 38, -1.4, 1);
+	c.fill();
 }, 40);
