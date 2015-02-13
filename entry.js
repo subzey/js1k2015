@@ -17,11 +17,40 @@ setInterval(function(){
 
 if (DEBUG){
 	c.scale(0.9, 0.9);
-	c.save();
-	c.strokeStyle = '#fff';
-	c.strokeRect(-VIEWPORT_WIDTH / 2, -VIEWPORT_HEIGHT / 2, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-	c.restore();
 }
+
+// Planet
+	// Fill & atmosphere glow
+	v01 = c.createRadialGradient(0, 480, 500, 0, 480, 510);
+	v01.addColorStop(0, '#37a');
+	v01.addColorStop(1, 'rgba(255,255,255,0)');
+	c.beginPath();
+	c.arc(0, 480, 510, 0, 7);
+	c.fillStyle=v01;
+	c.fill();
+
+	c.fillStyle='#352';
+	// Continent
+	c.beginPath();
+	for (var i=6; i-=1/32; ){
+		if (i<0){
+			throw new RangeError();
+		}
+		c.lineTo(
+			Math.cos(i) * (Math.sin(i * 3) + 5) * (Math.sin(i * 17) + 13) * 2 + 80,
+			Math.sin(i) * (Math.sin(i * 4) + 4)  * (Math.sin(i * 18) + 13) + 60 
+		);
+	}
+	c.fill();
+
+	// Shadow
+	v01 = c.createRadialGradient(50, 600, 400, 100, 600, 600);
+	v01.addColorStop(0, 'rgba(0,0,0,0)');
+	v01.addColorStop(1, 'rgba(0,0,0,.9)');
+	c.beginPath();
+	c.arc(0, 480, 510, 0, 7);
+	c.fillStyle = v01;
+	c.fill();
 
 	// c.scale(2,2);
 	// c.translate(-100, 0);
@@ -51,4 +80,11 @@ if (DEBUG){
 	c.arc(-132, -17, 39, 1, -1.4, 1);
 	c.arc(-122, -16, 38, -1.4, 1);
 	c.fill();
+
+if (DEBUG){
+	c.save();
+	c.strokeStyle = '#fff';
+	c.strokeRect(-VIEWPORT_WIDTH / 2, -VIEWPORT_HEIGHT / 2, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+	c.restore();
+}
 }, 40);
