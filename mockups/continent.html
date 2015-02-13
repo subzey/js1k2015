@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style></style>
+</head>
+<body>
+	<canvas id="a" width=600 height=600></canvas>
+	<script>
+		c = a.getContext('2d');
+
+			for (var i=6; i-=1/32; ){
+				if (i<0){
+					throw new RangeError();
+				}
+				c.lineTo(
+					2 * Math.cos(i) * (Math.sin(i * 3) + 5) * (Math.sin(i * 17) + 15)   + 400,
+					Math.sin(i) * (Math.sin(i * 4) + 4)  * (Math.sin(i * 18) + 15)  + 400
+				);
+			}
+			c.fill();
+
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style></style>
+</head>
+<body>
+	<canvas id="a" width=600 height=600></canvas>
+	<script>
+		c = a.getContext('2d');
+			for (var i=200; i--; ){
+				if (i<0){
+					throw new RangeError();
+				}
+				c.beginPath();
+				c.arc(Math.cos(i*30) * 300 + 300, Math.sin(i*31) * 300 + 300, Math.sin(i*5) + 1, 0, 7);
+				c.fill();
+			}
+	</script>
+</body>
+</html>
