@@ -21,21 +21,18 @@ if (DEBUG){
 
 // Planet
 	// Fill & atmosphere glow
-	v01 = c.createRadialGradient(0, 480, 500, 0, 480, 510);
+	v01 = c.createRadialGradient(0, 480, 500, 0, 480, 515);
 	v01.addColorStop(0, '#37a');
 	v01.addColorStop(1, 'rgba(255,255,255,0)');
 	c.beginPath();
-	c.arc(0, 480, 510, 0, 7);
+	c.arc(0, 480, 600, 0, 7);
 	c.fillStyle=v01;
 	c.fill();
 
-	c.fillStyle='#352';
+	c.fillStyle='#452';
 	// Continent
 	c.beginPath();
 	for (var i=6; i-=1/32; ){
-		if (i<0){
-			throw new RangeError();
-		}
 		c.lineTo(
 			Math.cos(i) * (Math.sin(i * 3) + 5) * (Math.sin(i * 17) + 13) * 2 + 80,
 			Math.sin(i) * (Math.sin(i * 4) + 4)  * (Math.sin(i * 18) + 13) + 60 
@@ -44,11 +41,11 @@ if (DEBUG){
 	c.fill();
 
 	// Shadow
-	v01 = c.createRadialGradient(50, 600, 400, 100, 600, 600);
+	v01 = c.createRadialGradient(100, 550, 450, 100, 550, 550);
 	v01.addColorStop(0, 'rgba(0,0,0,0)');
 	v01.addColorStop(1, 'rgba(0,0,0,.9)');
 	c.beginPath();
-	c.arc(0, 480, 510, 0, 7);
+	c.arc(0, 480, 515, 0, 7);
 	c.fillStyle = v01;
 	c.fill();
 
