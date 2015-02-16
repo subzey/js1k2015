@@ -19,6 +19,15 @@ if (DEBUG){
 	c.scale(0.9, 0.9);
 }
 
+// Stars
+	c.fillStyle = '#fff';
+	for (var v01=300; v01--; ){
+		c.beginPath();
+		c.arc(Math.cos(v01*30) * 300, Math.sin(v01*31) * 200, Math.sin(v01*5) + 1, 0, 7);
+		c.fill();
+	}
+//	return;
+
 // Planet
 	// Fill & atmosphere glow
 	v01 = c.createRadialGradient(0, 480, 500, 0, 480, 515);
@@ -28,6 +37,7 @@ if (DEBUG){
 	c.arc(0, 480, 600, 0, 7);
 	c.fillStyle=v01;
 	c.fill();
+
 
 	c.fillStyle='#452';
 	// Continent
