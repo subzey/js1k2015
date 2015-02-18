@@ -9,6 +9,7 @@ if (typeof __RegPack === 'undefined'){
 var v01, v02, v03;
 
 setInterval(function(){
+	g++;
 	b.bgColor=0;
 	a.width|=0; // Reset canvas
 	c.translate(a.width/2, a.height/2); // Center the context origin
@@ -73,8 +74,8 @@ if (DEBUG){
 
 	// Blinking landing point
 	c.translate(130, 30);
-	c.save();
 	c.fillStyle = '#fff';
+	c.save();
 	v01 = 1 + g %2 / 5;
 	c.scale(v01, v01);
 	c.beginPath();
@@ -86,17 +87,26 @@ if (DEBUG){
 	c.restore();
 
 	// LAZOR RAILS!
+	c.beginPath();
+	c.moveTo(0,0);
+	c.lineTo(-400, -29);
+	c.lineTo(-400, -27);
+	c.lineTo(0,0);
+	c.lineTo(-400, -36);
+	c.lineTo(-400, -34);
+	c.fill();
+
 
 
 
 // Train
-	v01 = 5 - g%1000/200;
+	v01 = 1000 / g;
 	c.scale(v01, v01);
 
 	for (v01 = 400; v01-- ; ){
 		c.beginPath();
 		c.moveTo(-70 + Math.sin(v01/152) * 30, v01/16-30);
-		c.lineTo(-560, v01/2-247);
+		c.lineTo(-560, v01/2-246);
 			if (v01<200){
 				c.strokeStyle = 'hsl(0, 15%, ' + (90-v01*0.3) + '%)';
 			} else {
@@ -110,7 +120,7 @@ if (DEBUG){
 	for (v01=5;v01--;){
 
 		c.beginPath();
-		c.arc(-98, -23, 18.5, 1, -1.2, 1);
+		c.arc(-98, -22.8, 18.5, 1, -1.2, 1);
 		c.arc(-95, -22.5, 19, -.8, .95);
 		c.fill();
 		c.scale(1.6, 1.6);
@@ -123,5 +133,4 @@ if (DEBUG){
 	c.strokeStyle = '#fff';
 	c.strokeRect(-VIEWPORT_WIDTH / 2, -VIEWPORT_HEIGHT / 2, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 }
-	g++;
 }, 40);
