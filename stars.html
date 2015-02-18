@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style></style>
+</head>
+<body>
+	<canvas id="a" width=600 height=600></canvas>
+	<script>
+		function render(){
+			var z = +slider.value;
+			document.title = z;
+			c = a.getContext('2d');
+			a.width |= 0;
+			for (var i=100; i--; ){
+				c.lineTo(1/Math.sin(i*z) * 10 + 200, 1/Math.cos(i*z) * 10 + 200);
+			}
+			c.fill();
+		}
+	</script>
+	<input id="slider" type="range" min="0" max="100" step="0.1" onchange="render()">
+</body>
+</html>
