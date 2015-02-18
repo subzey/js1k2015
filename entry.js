@@ -6,7 +6,7 @@ if (typeof __RegPack === 'undefined'){
 	g = null;
 }
 
-var v01;
+var v01, v02, v03;
 
 setInterval(function(){
 	b.bgColor=0;
@@ -17,14 +17,26 @@ setInterval(function(){
 
 if (DEBUG){
 	c.scale(0.9, 0.9);
+	c.save();
 }
 
 // Stars
 	c.fillStyle = '#fff';
-	for (var v01=300; v01--; ){
+	for (v01=300; v01--; ){
+		c.save();
+		c.translate(Math.cos(v01*30) * 250, Math.sin(v01*31) * 150);
 		c.beginPath();
-		c.arc(Math.cos(v01*30) * 300, Math.sin(v01*31) * 200, Math.sin(v01*5) + 1, 0, 7);
-		c.fill();
+		if (v01 % 27){
+			c.arc(0, 0, Math.sin(v01*5)/3 + 0.5, 0, 7);
+			c.fill();
+		} else {
+			for (v02=70; v02--; ){
+				v03 = v02 * (16.3 + Math.sin(v01 + g/50) / 1000);
+				c.lineTo(.5/Math.sin(v03), .5/Math.cos(v03));
+			}
+			c.fill();
+		}
+		c.restore();
 	}
 //	return;
 
@@ -42,10 +54,10 @@ if (DEBUG){
 	c.fillStyle='#452';
 	// Continent
 	c.beginPath();
-	for (var i=6; i-=1/32; ){
+	for (v01=6; v01-=1/32; ){
 		c.lineTo(
-			Math.cos(i) * (Math.sin(i * 3) + 5) * (Math.sin(i * 17) + 13) * 2 + 80,
-			Math.sin(i) * (Math.sin(i * 4) + 4)  * (Math.sin(i * 18) + 13) + 60 
+			Math.cos(v01) * (Math.sin(v01 * 3) + 5) * (Math.sin(v01 * 17) + 13) * 2 + 80,
+			Math.sin(v01) * (Math.sin(v01 * 4) + 4)  * (Math.sin(v01 * 18) + 13) + 60 
 		);
 	}
 	c.fill();
@@ -59,39 +71,57 @@ if (DEBUG){
 	c.fillStyle = v01;
 	c.fill();
 
-	// c.scale(2,2);
-	// c.translate(-100, 0);
+	// Blinking landing point
+	c.translate(130, 30);
+	c.save();
+	c.fillStyle = '#fff';
+	v01 = 1 + g %2 / 5;
+	c.scale(v01, v01);
+	c.beginPath();
+	for (v02=70; v02--; ){
+		v03 = v02 * (91 + Math.sin(g/100) / 200);
+		c.lineTo(1/Math.sin(v03), 1/Math.cos(v03));
+	}
+	c.fill();
+	c.restore();
+
+	// LAZOR RAILS!
 
 
-// Gradient
-	c.lineWidth = 2;
-	for (v01 = 99; v01-- ; ){
+
+// Train
+	v01 = 5 - g%1000/200;
+	c.scale(v01, v01);
+
+	for (v01 = 400; v01-- ; ){
 		c.beginPath();
-		c.moveTo(75 + Math.sin(v01/38) * 30, v01/4);
-		c.lineTo(-255, v01-90);
-			if (v01<50){
-				c.strokeStyle = 'hsl(0, 15%, ' + (90-v01*1.2) + '%)';
+		c.moveTo(-70 + Math.sin(v01/152) * 30, v01/16-30);
+		c.lineTo(-560, v01/2-247);
+			if (v01<200){
+				c.strokeStyle = 'hsl(0, 15%, ' + (90-v01*0.3) + '%)';
 			} else {
-				c.strokeStyle = 'hsl(195, 25%, ' + (180-v01*1.5) + '%)';
+				c.strokeStyle = 'hsl(195, 25%, ' + (180-v01*0.375) + '%)';
 			}
 
 		c.stroke();
 	}
 
-	c.beginPath();
-	c.arc(17, 5, 21, 1, -1.4, 1);
-	c.arc(22, 5.5, 20.5, -1.4, 1);
-	c.fill();
+	c.save();
+	for (v01=5;v01--;){
 
-	c.beginPath();
-	c.arc(-132, -17, 39, 1, -1.4, 1);
-	c.arc(-122, -16, 38, -1.4, 1);
-	c.fill();
+		c.beginPath();
+		c.arc(-98, -23, 18.5, 1, -1.2, 1);
+		c.arc(-95, -22.5, 19, -.8, .95);
+		c.fill();
+		c.scale(1.6, 1.6);
+	};
+	c.restore();
+
 
 if (DEBUG){
-	c.save();
+	c.restore();
 	c.strokeStyle = '#fff';
 	c.strokeRect(-VIEWPORT_WIDTH / 2, -VIEWPORT_HEIGHT / 2, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-	c.restore();
 }
+	g++;
 }, 40);
