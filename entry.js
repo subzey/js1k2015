@@ -24,19 +24,9 @@ if (DEBUG){
 // Stars
 	c.fillStyle = '#fff';
 	for (v01=300; v01--; ){
-		c.save();
-		c.translate(Math.cos(v01*30) * 250, Math.sin(v01*31) * 150);
 		c.beginPath();
-		if (v01 % 27){
-			c.arc(0, 0, Math.sin(v01*5)/3 + 0.5, 0, 7);
-		} else {
-			for (v02=70; v02--; ){
-				v03 = v02 * (16.3 + Math.sin(v01 + g/50) / 1000);
-				c.lineTo(0.5/Math.sin(v03), 0.5/Math.cos(v03));
-			}
-		}
+		c.arc(Math.cos(v01*30) * 250, Math.sin(v01*31) * 150, Math.sin(v01*5)/3 + 0.5, 0, 7);
 		c.fill();
-		c.restore();
 	}
 //	return;
 
@@ -85,7 +75,7 @@ if (DEBUG){
 	c.fill();
 	c.restore();
 
-	// c.globalAlpha = Math.cos(g/10) / 3 + .7;
+	// c.fillStyle = 'hsl(300,50%,'+(Math.cos(g/10) * 10 + 80)+'%)';
 	// LAZOR RAILS!
 
 
