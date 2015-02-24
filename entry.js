@@ -92,16 +92,34 @@ if (DEBUG){
 	c.lineTo(-400, -29);
 	c.lineTo(-400, -27);
 	c.lineTo(0,0);
-	c.lineTo(-400, -36);
-	c.lineTo(-400, -34);
+	c.lineTo(-400, -52);
+	c.lineTo(-400, -50);
 	c.fill();
 
+	c.save();
+	v02 = 1+g%30/100;
+	c.scale(v02, v02);
+	for (v01=12; v01--;){
+		c.beginPath();
+		c.moveTo(-10, 10);
+		c.quadraticCurveTo(
+			-80, -15,
+			-120, -25
+		);
+		c.quadraticCurveTo(
+			-80, -14.8,
+			-10, 10
+		);
+		c.fill();
+		c.scale(1.3, 1.3);
+	}
+	c.restore();
 
 
 
 // Train
 	v01 = (500 / g) - .5;
-	// v01 = 3;
+	// v01 = 5;
 	c.scale(v01, v01);
 
 	for (v01 = 400; v01-- ; ){
@@ -126,7 +144,7 @@ if (DEBUG){
 		if (v01){
 			c.arc(-99, -23.0, 18.8, 1, -1.2, 1);
 		} else {
-			c.arc(-99, -23.0, 18.8, 2.4, 4.2);
+			c.arc(-99, -23.0, 18.8, 2.8, 4.6);
 		}
 		c.arc(-97, -22.6, 19.2, -0.9, 0.95);
 		c.fill();
