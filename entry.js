@@ -100,7 +100,8 @@ if (DEBUG){
 
 
 // Train
-	v01 = 1000 / g;
+	v01 = (500 / g) - .5;
+	// v01 = 3;
 	c.scale(v01, v01);
 
 	for (v01 = 400; v01-- ; ){
@@ -116,17 +117,40 @@ if (DEBUG){
 		c.stroke();
 	}
 
+// Stripes and the rear
 	c.save();
+	c.fillStyle = '#111';
 	for (v01=5;v01--;){
 
 		c.beginPath();
-		c.arc(-98, -22.8, 18.5, 1, -1.2, 1);
-		c.arc(-95, -22.5, 19, -.8, .95);
+		if (v01){
+			c.arc(-99, -23.0, 18.8, 1, -1.2, 1);
+		} else {
+			c.arc(-99, -23.0, 18.8, 2.4, 4.2);
+		}
+		c.arc(-97, -22.6, 19.2, -0.9, 0.95);
 		c.fill();
 		c.scale(1.6, 1.6);
-	};
+
+	}
 	c.restore();
 
+// Flames
+c.fillStyle = '#f82';
+c.globalAlpha = 0.1;
+for (v01=10; v01--; ){
+	c.beginPath();
+	c.moveTo(-70 + Math.sin(g + v01), -35 + Math.cos(g + v01));
+	c.quadraticCurveTo(
+		10, -10,
+		-80 + Math.sin(g + v01), Math.cos(g + v01)
+	);
+	c.quadraticCurveTo(
+		-10 + Math.sin(g + v01) * 9, -12  + Math.cos(g + v01) * 3,
+		-70 + Math.sin(g + v01), -35 + Math.cos(g + v01)
+	);
+	c.fill();
+}
 
 if (DEBUG){
 	c.restore();
