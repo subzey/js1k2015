@@ -1,6 +1,6 @@
 var VIEWPORT_WIDTH = 500;
 var VIEWPORT_HEIGHT = 300;
-var DEBUG = true;
+var DEBUG = false;
 
 if (typeof __RegPack === 'undefined'){
 	g = null;
@@ -9,11 +9,11 @@ if (typeof __RegPack === 'undefined'){
 var v01, v02, v03;
 
 setInterval(function(){
-	g++;
+	g=1+g%1000;
 	b.bgColor=0;
 	a.width|=0; // Reset canvas
 	c.translate(a.width/2, a.height/2); // Center the context origin
-	v01 = Math.min(a.width / VIEWPORT_WIDTH, a.height / VIEWPORT_HEIGHT);
+	v01 = Math.max(a.width / VIEWPORT_WIDTH, a.height / VIEWPORT_HEIGHT);
 	c.scale(v01, v01); // Make logical viewport cover physical one
 
 if (DEBUG){
@@ -86,13 +86,16 @@ if (DEBUG){
 	c.fill();
 	c.restore();
 
+	c.globalAlpha = Math.cos(g/10) / 3 + .7;
 	// LAZOR RAILS!
+
+
 	c.beginPath();
 	c.moveTo(0,0);
 	c.lineTo(-400, -29);
-	c.lineTo(-400, -27);
+	c.lineTo(-400, -26);
 	c.lineTo(0,0);
-	c.lineTo(-400, -52);
+	c.lineTo(-400, -53);
 	c.lineTo(-400, -50);
 	c.fill();
 
@@ -116,7 +119,7 @@ if (DEBUG){
 	c.restore();
 
 
-
+	c.globalAlpha = 1;
 // Train
 	v01 = (500 / g) - .5;
 	// v01 = 5;
