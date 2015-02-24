@@ -10,8 +10,8 @@ var v01, v02, v03;
 
 setInterval(function(){
 	g=1+g%1000;
-	b.bgColor=0;
-	a.width|=0; // Reset canvas
+	var __inline_bgcolorReset = b.bgColor=0;
+	a.width |= __inline_bgcolorReset; // Reset canvas
 	c.translate(a.width/2, a.height/2); // Center the context origin
 	v01 = Math.max(a.width / VIEWPORT_WIDTH, a.height / VIEWPORT_HEIGHT);
 	c.scale(v01, v01); // Make logical viewport cover physical one
@@ -29,14 +29,13 @@ if (DEBUG){
 		c.beginPath();
 		if (v01 % 27){
 			c.arc(0, 0, Math.sin(v01*5)/3 + 0.5, 0, 7);
-			c.fill();
 		} else {
 			for (v02=70; v02--; ){
 				v03 = v02 * (16.3 + Math.sin(v01 + g/50) / 1000);
-				c.lineTo(.5/Math.sin(v03), .5/Math.cos(v03));
+				c.lineTo(0.5/Math.sin(v03), 0.5/Math.cos(v03));
 			}
-			c.fill();
 		}
+		c.fill();
 		c.restore();
 	}
 //	return;
@@ -79,14 +78,14 @@ if (DEBUG){
 	v01 = 1 + g %2 / 5;
 	c.scale(v01, v01);
 	c.beginPath();
-	for (v02=70; v02--; ){
-		v03 = v02 * (91 + Math.sin(g/100) / 200);
-		c.lineTo(1/Math.sin(v03), 1/Math.cos(v03));
+	for (v01=70; v01--; ){
+		v02 = v01 * (91 + Math.sin(g/100) / 200);
+		c.lineTo(1/Math.sin(v02), 1/Math.cos(v02));
 	}
 	c.fill();
 	c.restore();
 
-	c.globalAlpha = Math.cos(g/10) / 3 + .7;
+	// c.globalAlpha = Math.cos(g/10) / 3 + .7;
 	// LAZOR RAILS!
 
 
@@ -119,7 +118,7 @@ if (DEBUG){
 	c.restore();
 
 
-	c.globalAlpha = 1;
+	// c.globalAlpha = 1;
 // Train
 	v01 = (500 / g) - .5;
 	// v01 = 5;
@@ -130,9 +129,9 @@ if (DEBUG){
 		c.moveTo(-70 + Math.sin(v01/152) * 30, v01/16-30);
 		c.lineTo(-560, v01/2-246);
 			if (v01<200){
-				c.strokeStyle = 'hsl(0, 15%, ' + (90-v01*0.3) + '%)';
+				c.strokeStyle = 'hsl(0,15%,' + (90-v01*0.3) + '%)';
 			} else {
-				c.strokeStyle = 'hsl(195, 25%, ' + (180-v01*0.375) + '%)';
+				c.strokeStyle = 'hsl(195,25%,' + (180-v01*0.375) + '%)';
 			}
 
 		c.stroke();
@@ -157,8 +156,9 @@ if (DEBUG){
 	c.restore();
 
 // Flames
-c.fillStyle = '#f82';
-c.globalAlpha = 0.1;
+// c.fillStyle = '#f82';
+// c.globalAlpha = 0.1;
+c.fillStyle = 'rgba(255,136,34,.1)';
 for (v01=10; v01--; ){
 	c.beginPath();
 	c.moveTo(-70 + Math.sin(g + v01), -35 + Math.cos(g + v01));
