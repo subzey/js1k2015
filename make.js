@@ -3,6 +3,8 @@
 var INTERVAL_ONLY = true;
 var REMOVE_VAR = true;
 var CUSTOM_CANVAS_HASHING = false;
+var REGPACK_EXCLUDED_VARS = 'a c g';
+
 var regPackNull = 'i';
 
 process.chdir(__dirname);
@@ -183,6 +185,8 @@ function run(){
 						paramOHash2D: !CUSTOM_CANVAS_HASHING,
 						paramOHashWebGL: false,
 						paramOHashAudio: false,
+
+						paramOExcludedVars: REGPACK_EXCLUDED_VARS,
 
 						paramOGlobalDefined: true,
 						paramOGlobalVariable: 'c',
