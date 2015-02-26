@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>RegPack v3.0.1</title>
+	<title>RegPack v3.0.2</title>
 	<style type="text/css">
 #options {
   border:1px solid gray;
@@ -26,14 +26,14 @@
 Attempt method hashing and renaming for
 <input type="checkbox" name="paramOHash2D" id="paramOHash2D" checked="checked"/>2D canvas context
 <input type="checkbox" name="paramOHashWebGL" id="paramOHashWebGL" checked="checked"/>WebGL canvas context
-<input type="checkbox" name="paramOHashAudio" id="paramOHashAudio"  checked="checked"/>AudioContext
+<input type="checkbox" name="paramOHashAudio" id="paramOHashAudio" checked="checked"/>AudioContext
 <br><input type="checkbox" name="paramOGlobalDefined" id="paramOGlobalDefined" checked="checked"/> Assume global variable <input type="text" size=6 value="c" id="paramOGlobalVariable" /> is a <select id="paramOGlobalType">
 <option value=0 selected>2D canvas context</option>
 <option value=1>WebGL canvas context</option>
 </select> <i>(as in js1k shim)</i>
 <br><input type="checkbox" name="paramOReassignVars" id="paramOReassignVars" checked="checked"/> Reassign variable names to produce consecutive character blocks,
 except for variables <input type="text" value="a b c" id="paramOExcludedVars" />
-<br><br><b>RegPack v3.0.1</b> <button id="packAction">Pack</button><button id="mathPackAction">Pack with(Math)</button>
+<br><br><b>RegPack v3.0.2</b> <button id="packAction">Pack</button><button id="mathPackAction">Pack with(Math)</button>
 Score = <input type="text" size=6 value=1 id="paramFGain" />
 *gain + <input type="text" size=6 value=0 id="paramFLength" />
 *length + <input type="text" size=6 value=0 id="paramFCopies" />
@@ -202,7 +202,7 @@ RegPack.prototype = {
 			var context = canvas.getContext("2d");
 			for (var count=inputList.length, i=0; i<count; ++i)
 			{
-				var result = this.preprocess2DContext(inputList[i][1][1], (options.contextType==0?options.contextVariableName:false), context);
+				var result = this.preprocess2DContext(inputList[i][1][1], (options.contextType==0?options.contextVariableName:false), context, options.varsNotReassigned);
 				if (result) {
 					result[2]=inputList[i][1][2]+result[2];
 					inputList.push([inputList[i][0]+" 2D", result]);
@@ -218,7 +218,7 @@ RegPack.prototype = {
 			var context = canvas.getContext("experimental-webgl");
 			for (var count=inputList.length, i=0; i<count; ++i)
 			{
-				var result = this.preprocessWebGLContext(inputList[i][1][1], (options.contextType==1?options.contextVariableName:false), context);
+				var result = this.preprocessWebGLContext(inputList[i][1][1], (options.contextType==1?options.contextVariableName:false), context, options.varsNotReassigned);
 				if (result) {
 					result[2]=inputList[i][1][2]+result[2];
 					inputList.push([inputList[i][0]+" WebGL", result]);
@@ -236,7 +236,7 @@ RegPack.prototype = {
 			var context = new AudioContext;
 			for (var count=inputList.length, i=0; i<count; ++i) 
 			{
-				var result = this.preprocessAudioContext(inputList[i][1][1], context);
+				var result = this.preprocessAudioContext(inputList[i][1][1], context, options.varsNotReassigned);
 				if (result) {
 					result[2]=inputList[i][1][2]+result[2];
 					inputList.push([inputList[i][0]+" Audio", result]);
@@ -265,9 +265,10 @@ RegPack.prototype = {
 	 * @param input the code to preprocess
 	 * @param variableName the variable holding the context if defined outside of the input (shim), false otherwise
 	 * @param context an instance of a canvas 2d context, to list method names
+	 * @param varsNotReassigned boolean array[128], true to keep name of variable
 	 * @return the result array, or false if no 2d context definition is found in the code.
 	 */
-	preprocess2DContext : function(input, variableName, context) {
+	preprocess2DContext : function(input, variableName, context, varsNotReassigned) {
 		// Obtain the context definition (variable name and location in the code)
 		var objectName = variableName, objectOffset = 0, declarationLength = 0, contextFound = false;
 		if (variableName) {
@@ -284,7 +285,7 @@ RegPack.prototype = {
 		}
 			
 		if (contextFound) {
-			var preprocessedCode = this.renameObjectMethods(input, objectName, objectOffset, declarationLength, context);
+			var preprocessedCode = this.renameObjectMethods(input, objectName, objectOffset, declarationLength, context, varsNotReassigned);
 			return preprocessedCode;
 		}
 		return false;
@@ -303,9 +304,10 @@ RegPack.prototype = {
 	 * @param input the code to preprocess
 	 * @param variableName the variable holding the context if defined outside of the input (shim), false otherwise
 	 * @param context an instance of a canvas webgl context, to list method names
+	 * @param varsNotReassigned boolean array[128], true to keep name of variable
 	 * @return the result array, or false if no webgl context definition is found in the code.
 	 */
-	preprocessWebGLContext : function(input, variableName, context) {
+	preprocessWebGLContext : function(input, variableName, context, varsNotReassigned) {
 		// Obtain the context definition (variable name and location in the code)
 		var objectName = variableName, objectOffset = 0, declarationLength = 0, contextFound = false;
 		if (variableName) {
@@ -322,7 +324,7 @@ RegPack.prototype = {
 		}
 		if (contextFound) {
 			
-			var preprocessedCode = this.renameObjectMethods(input, objectName, objectOffset, declarationLength, context);
+			var preprocessedCode = this.renameObjectMethods(input, objectName, objectOffset, declarationLength, context, varsNotReassigned);
 			preprocessedCode.push(objectName);
 			return preprocessedCode;
 		}
@@ -373,6 +375,7 @@ RegPack.prototype = {
 	 *
 	 * @param input the code to preprocess
 	 * @param context an instance of an AudioContext, to list method names
+	 * @param varsNotReassigned boolean array[128], true to keep name of variable
 	 * @return the result array, or false if no AudioContext definition is found in the code.
 	 */
 
@@ -477,7 +480,7 @@ RegPack.prototype = {
 		}
 		
 		if (replacementOffset>0) {
-			var preprocessedCode = this.renameObjectMethods(input, objectName, replacementOffset, 0, context);
+			var preprocessedCode = this.renameObjectMethods(input, objectName, replacementOffset, 0, context, varsNotReassigned);
 			preprocessedCode[2] = details + preprocessedCode[2];
 			return preprocessedCode;
 		}
@@ -500,8 +503,9 @@ RegPack.prototype = {
 	 * @param offset : character offset to the beginning of the object declaration. Zero if defined outside (shim)
 	 * @param declarationLength : length of the object declaration, starting at offset. Zero if defined outside (shim)
 	 * @param reference : an instance of an object of the same type (2D context, WebGL context, ..) to extract method names
+	 * @param varsNotReassigned : boolean array[128], true to keep name of variable
 	 */
-	renameObjectMethods : function(input, objectName, offset, declarationLength, reference)
+	renameObjectMethods : function(input, objectName, offset, declarationLength, reference, varsNotReassigned)
 	{
 		// these are the hashing functions that will be tested
 		var hashFunctions = [
@@ -545,16 +549,18 @@ RegPack.prototype = {
 					reverseLookup[hashedName] = (reverseLookup[hashedName] ? "<collision>" : w);
 				}
 				for (w in reverseLookup) {
-					forwardLookup[reverseLookup[w]]=w;
+					forwardLookup[reverseLookup[w]]=w;	// keep only the method names with no collisions
 				}
 				var score = 0;
 				for (var index=0; index<methodsInUse.length; ++index) {
-					if (forwardLookup[methodsInUse[index]]) {
+					// Fix for issue #11 : in FF, arrays have a method fill(), as 2D contexts do
+					// typeof() discriminates between "string" (hash match), "undefined" (no match) and "function" (array built-in)
+					if (typeof(forwardLookup[methodsInUse[index]])=="string") {
 						score += methodsInUse[index].length - forwardLookup[methodsInUse[index]].length;
 					}
 				}
-				score-=hashFunctions[functionIndex][0].length;
-				
+				score-=hashFunctions[functionIndex][0].replace(/y/g, yValue).length;
+								
 				if (score>bestScore) {
 					bestScore = score;
 					bestIndex = functionIndex;
@@ -575,7 +581,8 @@ RegPack.prototype = {
 		var hashedCode = input;
 		details += "Renamed methods for "+objectName+"\n";
 		for (var index=0; index<methodsInUse.length; ++index) {
-			if (methodsInUse[index] in forwardLookup) {
+			// Fix for issue #11, needed in this iteration again
+			if (typeof(forwardLookup[methodsInUse[index]])=="string") {
 				// replace all instances of that method in one call.
 				// The opening bracket at the end avoids triggering on a subset of the name,
 				// for instance enable() instead of enableVertexAttribArray() in WebGL contexts
@@ -595,7 +602,9 @@ RegPack.prototype = {
 		var loopIndexResult=loopIndexRegExp.exec(input);
 		while (loopIndexResult) {	// get a set with a unique entry for each method
 			var code = loopIndexResult[1].charCodeAt(0);
-			indexMatches[code] = (indexMatches[code]||0)+1;
+			if (!varsNotReassigned[code]) {
+				indexMatches[code] = (indexMatches[code]||0)+1;
+			}
 			loopIndexResult=loopIndexRegExp.exec(input);
 		}
 		var indexName="i"; // default name
@@ -1380,8 +1389,15 @@ RegPack.prototype = {
 (function() {
 	
 	packer = new RegPack();
+	
+	// Fix for issue #12 : disable AudioContext hashing if the browser does not support it
+	if (typeof AudioContext == "undefined")
+	{
+		hashAudioCheckbox = document.getElementById("paramOHashAudio");
+		hashAudioCheckbox.checked = false;
+		hashAudioCheckbox.disabled = true;
+	}
 
- 
 })();
 
 

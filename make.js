@@ -2,7 +2,7 @@
 
 var INTERVAL_ONLY = true;
 var REMOVE_VAR = true;
-var CANVAS_HASHING = true;
+var CUSTOM_CANVAS_HASHING = false;
 var regPackNull = 'i';
 
 process.chdir(__dirname);
@@ -169,28 +169,35 @@ function run(){
 	var bestWithMath;
 
 
-	[true /*, false */].forEach(function(withMath){
+	[true, false].forEach(function(withMath){
+		if (CUSTOM_CANVAS_HASHING && !withMath){
+			return; // Custom canva hashing works only with Math
+		}
 		[0,1,2].forEach(function(paramGain){
 			[0,1,2].forEach(function(paramLength){
 				[0,1,2].forEach(function(paramCopies){
 					var regPackOptions = {
 						paramFGain: paramGain,
 						paramFLength: paramLength,
-						paramFCopies: paramCopies
+						paramFCopies: paramCopies,
+						paramOHash2D: !CUSTOM_CANVAS_HASHING,
+						paramOHashWebGL: false,
+						paramOHashAudio: false,
+
+						paramOGlobalDefined: true,
+						paramOGlobalVariable: 'c',
+						paramOGlobalType: 0 // 2DCanvasContext
 					};
 					process.stdout.write('Trying RegPack, ' + [paramGain, paramLength, paramCopies].join(', ') + (withMath ? ' with Math' : '') + '... ');
 					regPackOptions.originalString = minified;
 					if (INTERVAL_ONLY && withMath){
 						regPackOptions.originalString = minifiedWithMath;
 					}
-					if (CANVAS_HASHING){
+					if (CUSTOM_CANVAS_HASHING){
 						regPackOptions.originalString = canvasHashingCode + regPackOptions.originalString.replace(/c\.(\w+)/g, function(_, i){
 							return 'c[Math.' + [i[0]+[i[3]||0]+[i[6]]+[i[9]]] + ']';
 						});
 					}
-					regPackOptions.paramOHash2D = false;
-					regPackOptions.paramOHashWebGL = false;
-					regPackOptions.paramOHashAudio = false;
 					var regPacked = runRegPack(regPackOptions, withMath);
 					if (INTERVAL_ONLY){
 						regPacked = regPacked.replace(/(?:with\(Math\))?eval\(_\)?$/, 'setInterval(_,' + intervalExpression + ')')
