@@ -16,6 +16,10 @@ setInterval(function(){
 	v01 = Math.max(a.width / VIEWPORT_WIDTH, a.height / VIEWPORT_HEIGHT);
 	c.scale(v01, v01); // Make logical viewport cover physical one
 
+// Camera shake
+	v01 = (g < 213) && Math.cos(Math.log(g/2+5));
+	c.translate(Math.cos(g*3) * v01, Math.sin(g*2) * v01);
+
 if (DEBUG){
 	c.scale(0.9, 0.9);
 	c.save();
