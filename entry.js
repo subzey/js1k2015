@@ -79,7 +79,6 @@ if (DEBUG){
 	c.fill();
 	c.restore();
 
-	// c.fillStyle = 'hsl(300,50%,'+(Math.cos(g/10) * 10 + 80)+'%)';
 	// LAZOR RAILS!
 
 
@@ -92,6 +91,7 @@ if (DEBUG){
 	c.lineTo(-400, -50);
 	c.fill();
 
+	c.fillStyle = 'hsl(300,50%,'+(Math.cos(g/10) * 10 + 80)+'%)';
 	c.save();
 	v02 = 1+g%30/100;
 	c.scale(v02, v02);
