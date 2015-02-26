@@ -11,7 +11,7 @@ var v01, v02, v03;
 setInterval(function(){
 	g=1+g%1000;
 	var __inline_bgcolorReset = b.bgColor=0;
-	a.width |= __inline_bgcolorReset; // Reset canvas
+	a.width -= __inline_bgcolorReset; // Reset canvas
 	c.translate(a.width/2, a.height/2); // Center the context origin
 	v01 = Math.max(a.width / VIEWPORT_WIDTH, a.height / VIEWPORT_HEIGHT);
 	c.scale(v01, v01); // Make logical viewport cover physical one
