@@ -152,6 +152,6 @@ There's no challenge in doing obvious optimizations manually, but there is chall
 in making computer do it for you, and making only minimal pinpoint "lowlevel" corrections where algorithm
 is too dumb.
 
-That's all. Thanks to everyone who read this, greets to all js1k participarts (you did great, guys!) and, of course, kudos to @kuvos!
+That's all. Thanks to everyone who read this, greets to all js1k participants (you did great, guys!) and, of course, kudos to @kuvos!
 
 *Hey, that all was about the tool, what about the code itself? I'll write nothing, as you can read its source and nothing too special happens there :D*
