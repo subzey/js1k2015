@@ -3,7 +3,7 @@
 Programmers doesn't like to write documentation, often they doesn't like to write anything except code.
 But sharing the knowledge is everything and here's the (brief) postmortem on what I did during this year's JS1K.
 
-It covers two entries, the [invitro](http://subzey.github.io/js1k2015invitro/) which I made with [@xem](https://github.com/xem)'s help and my very own compo entry, [Cosmic Railways](https://github.com/xem).
+It covers two entries, the [invitro](http://subzey.github.io/js1k2015invitro/) which I made with [@xem](https://github.com/xem)'s help and my very own compo entry, [Cosmic Railways](http://js1k.com/2015-hypetrain/demo/2217).
 
 These two entries has something in common, something that is quite unusual for me as a golfer:
 it was built from original source to "production" code completely automatically without touching a single byte "by hands" in between.
