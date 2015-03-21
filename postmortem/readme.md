@@ -141,7 +141,7 @@ That allowed me to fiddle with code and quickly check whether inlining saves byt
 
 Talking of fiddling, here's a bonus part. If you're going to create a some kind of builder, use a FS watcher.
 It's awesome to move a line up or down and almost instantly know how much bytes were saved.
-This is something I could never managed to do if I compress the code manually.
+This is something I could never manage to do if I compress the code manually.
 
 # Conclusion
 
