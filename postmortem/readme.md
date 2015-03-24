@@ -115,7 +115,7 @@ I did nothing for solving that problem, just didn't use functions.
 
 #### Constants
 
-There's one thing I made in the builder. If a ariable name is all uppercase, it is chopped off from the source and all its entries in the code are replaced with its value.
+There's one thing I made in the builder. If a variable name is all uppercase, it is chopped off from the source and all its entries in the code are replaced with its value.
 
 _It is made with ugly RegExps and eval this time. I didn't like that code so much, I've started a new production level preprocession project, [Rhubarb](https://www.npmjs.com/package/rhubarb)._
 
