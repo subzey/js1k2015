@@ -1,14 +1,14 @@
 # On js1k 2015
 
-Programmers doesn't like to write documentation, often they doesn't like to write anything except code.
+Programmers don't like to write documentation, often they don't like to write anything except code.
 But sharing the knowledge is everything and here's the (brief) postmortem on what I did during this year's JS1K.
 
 It covers two entries, the [invitro](http://subzey.github.io/js1k2015invitro/) which I made with [@xem](https://github.com/xem)'s help and my very own compo entry, [Cosmic Railways](http://js1k.com/2015-hypetrain/demo/2217).
 
-These two entries has something in common, something that is quite unusual for me as a golfer:
+These two entries have something in common, something that is quite unusual for me as a golfer:
 it was built from original source to "production" code completely automatically without touching a single byte "by hands" in between.
 
-## Uber builder
+## Über builder
 
 Of course, that wasn't a regular grunt or gulp task. _(In fact, no task runners were involved at all.)_
 That was just an ugly node.js script that nevertheless did its job well.
@@ -16,7 +16,7 @@ That was just an ugly node.js script that nevertheless did its job well.
 It's open source and [you can browse its code](https://github.com/subzey/js1k2015/blob/master/make.js).
 You are even free to fork it and to use it in your own projects, but be warned: that's just a hacking tool that features really ugly code and wasn't intended to have some kind of documented public API (yet).
 
-Here what it does, in the nutshell: Inline preprocession → UglifyJS2 → Var removal → RegPack → Templating.
+Here's what it does, in a nutshell: Inline preprocession → UglifyJS2 → Var removal → RegPack → Templating.
 I'll describe it here in reverse order, `pop`ping an abstraction layer once at a time.
 
 ### Templating
@@ -31,29 +31,29 @@ The invitro was made (and released) with 2014's shim, just because nobody knew h
 
 ### RegPack
 
-Nowadays almost every JS1K entry is packed with awesome [RegPack](http://siorki.github.io/regPack.html) packer.
-If we'd count the kudos, [@Siorki](https://github.com/Siorki) probably is the champion.
+Nowadays almost every JS1K entry is packed with the awesome [RegPack](http://siorki.github.io/regPack.html) packer.
+If we counted the kudos, [@Siorki](https://github.com/Siorki) probably would be the champion.
 
-The hard part is RegPack was a browser application. (Now, when I write these words, AFAIK, it already has node.js support.)
-And I had to grab `require("vm")`and write an environment mimicking browser.
+The hard part was RegPack being a browser application. (Now, when I write these words, AFAIK, it already has node.js support.)
+And I had to grab `require("vm")` and write an environment mimicking browser.
 What was a boring part, mostly a debugging and stuffing code just to make it runnable.
-And I had several unnoticed bugs, so the code packed with Node was bigger than the same packed in browser.
+And I had several unnoticed bugs, so the code packed with Node was bigger than the same packed in the browser.
 
-But the yield worths it. I saved a lot of time just by not copy-pasting code into Chrome page.
-Also I could bruteforce the packing params (score/gain/length) and often it gave much better results than default "1, 0, 0".
+But the yield was worth it. I saved a lot of time just by not copy-pasting code into Chrome's window.
+Also I could bruteforce the packing params (score/gain/length) and it often gave much better results than the default "1, 0, 0".
 
 There was some other fiddling:
 
 #### Custom canvas context hashing
 
-The "builtin" hashing copies ctx methods with shorter name. But it cannot deal with property setters. Assign `c.sS = 'red'` and js interpreter will just do nothing useful.
+The "built-in" hashing copies ctx methods with shorter name. But it cannot deal with property setters. Assign `c.sS = 'red'` and js interpreter will just do nothing useful.
 
 Here's an idea proposed by @xem and evolved by me: long ctx property names can also be accessed via square braces. If we have variable, say, `sS` somewhere it the scope and it equals to `"strokeStyle"`, then `c[sS]` would work as a charm!
 
 We can define a global variable accessing `window` (or `self`), but there's a mechanism that makes properties visible as a variables, and you know it. That's the `with` operator. So we just create an object and stuff properties there.
-...or we pick an already existing object, `Math`, that already is treated specially and we're probably already using `with(Math)`. Then it's just up to picking a good hashing function, and that's it.
+...or we pick an already existing object, `Math`, that is already treated specially as we're probably already using `with(Math)`. Then it's just up to picking a good hashing function, and that's it.
 
-Yes, we're polluting a builtin object here. But that's a code golfing.
+Yes, we're polluting a built-in object here. But that's just for code golfing.
 
 Note that this hashing scheme often results a bigger code. But sometimes (and invitro is exactly that case) it saves ~50 bytes.
 
@@ -77,7 +77,7 @@ This techinque was used both for the invitro and the entry. How to determine whe
 ### Var removal
 
 Pretty dumb regular expression removes `var` statements, so all variables are global and are defined by assignment.
-Extra attention must be applied in order to avoid references to variables until it is assigned.
+Extra attention must be applied in order to avoid references to variables until they are assigned.
 
 But if you're going to reuse variables, that's simple.
 Here's my advice: declare all variables in global scope _(in code golf, of course, never do that in production!)_, and if you're going to reuse it, then give the names like `var1`, `v01`. This is the only way you can drop `var`'s safely.
@@ -90,9 +90,9 @@ Sure, golfing this manually is insanity.
 
 I've found something interesting: UglifyJS and Closure Compiler performs very well for canvas drawing routines.
 
-Let imagine, how to coerce value to integer? `Math.round(i)`, `i|0`, `i&i`, `i^NaN`, `+i.replace(/\..*/,'')`, lots of ways!
+Let's imagine, how can we coerce a value to integer? `Math.round(i)`, `i|0`, `i&i`, `i^NaN`, `+i.replace(/\..*/,'')`, lots of ways!
 
-How can to draw a line on canvas? `c.lineTo(x,y)`. That's the end of the list.
+How can we draw a line on a canvas? `c.lineTo(x,y)`. That's the end of the list.
 You cannot even use `undefined` instead of 0.
 
 UglifyJS is not an option for 140byt.es, but it's pretty good for js1k.
@@ -111,11 +111,11 @@ to `(a, b, c)` as well. That's more bytes, but if would compress better. Uglify 
 
 The other thing Uglify lacks is treating functions as procedures, i.e., `return whatever`. _(Am I wrong? [Tweet me!](http://twitter.com/subzey/))_
 
-I did nothing for solving that problems, just didn't use functions.
+I did nothing for solving that problem, just didn't use functions.
 
 #### Constants
 
-There one thing I made in builder. If variable name is all uppercase, it is chopped off from the source and all its entries in the code are replaced with its value.
+There's one thing I made in the builder. If a ariable name is all uppercase, it is chopped off from the source and all its entries in the code are replaced with its value.
 
 _It is made with ugly RegExps and eval this time. I didn't like that code so much, I've started a new production level preprocession project, [Rhubarb](https://www.npmjs.com/package/rhubarb)._
 
@@ -141,7 +141,7 @@ That allowed me to fiddle with code and quickly check whether inlining saves byt
 
 Talking of fiddling, here's a bonus part. If you're going to create a some kind of builder, use a FS watcher.
 It's awesome to move a line up or down and almost instantly know how much bytes were saved.
-This is something I could never manage to do if I compress the code manually.
+This is something I could never manage to do if I compressed the code manually.
 
 # Conclusion
 
